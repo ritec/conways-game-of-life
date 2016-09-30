@@ -48,7 +48,6 @@ class Game
     life_candidates = []
     board.each_with_index do |row, row_index|
       row.each_with_index do |column, column_index|
-        print column
         death_candidates << [row_index, column_index] if (column == 1) && (neighbors(column_index, row_index).count(1) < 2) || (neighbors(column_index, row_index).count(1) > 3) #rule 1 && rule 3
         stays_alive << [row_index, column_index] if (column == 1) && (neighbors(column_index, row_index).count(1) == (2 || 3)) #rule 2
         life_candidates << [row_index, column_index] if column == 0 && neighbors(column_index, row_index).count(1) == 3 # rule 4
@@ -64,7 +63,9 @@ class Game
   end
 
   def test_game(seed, num_of_iterations, expected_state)
-    # returns true or false
+    @board = seed
+    (1..num_of_iterations).each{|i| state_checker }
+    @board == expected_state
   end
 
   def start
@@ -72,7 +73,7 @@ class Game
       display_board
       state_checker
       display_board
-      sleep 0.1
+      sleep 0.5
     end
   end
 
@@ -85,6 +86,7 @@ game.display_board
 game.initial_state
 game.neighbors(2,2)
 game.start
+# game.test_game([[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],6 , [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 1, 1, 1, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
 
 # game.board.each_with_index{|row, r_index| row.each_with_index{|col, col_index| puts game.neighbors(col_index, r_index)}}
 # print "row_index: #{row_index} row: #{row} column_index: #{column_index}  column: #{column} \n"
