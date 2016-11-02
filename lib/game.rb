@@ -1,5 +1,3 @@
-# Conway's Game of Life.
-# Ri Caragol
 require_relative 'cell.rb'
 
 class Game
@@ -10,11 +8,10 @@ class Game
     @world = world || Array.new(width){ Array.new(height){rand(0..1)} }
     @width = @world.first.size
     @height = @world.size
-    @cells = []
   end
 
   def display_world
-    @world = cells.each_slice(@width).to_a
+    @world = Cell.instances.each_slice(@width).to_a
     print "\n"
     @world.each{|row| print row.map(&:state).to_s + "\n"}
     print "Iteration: #{@@iteration_count} \n"
@@ -25,19 +22,18 @@ class Game
     world.each_with_index do |row, row_index|
       row.each_with_index do |column, column_index|
           state = (column == 1) ? 1 : 0
-          @cells << Cell.new(column_index, row_index, state)
+          Cell.new(column_index, row_index, state)
       end
     end
-    @cells
+    Cell.instances
   end
 
   def reset_game
     Cell.instances = []
-    @cells = []
   end
 
   def get_cells_alive
-    cells.select{|cell| cell.alive? }
+    Cell.instances.select{|cell| cell.alive? }
   end
 
   def get_all_candidate_cells
@@ -64,7 +60,7 @@ class Game
     @world = seed
     spawn_cells
     (1..num_of_iterations).each{|i| tick! }
-    @world = cells.each_slice(@width).to_a
+    @world = Cell.instances.each_slice(@width).to_a
     world_state = @world.map{|row| row.map(&:state) }
     world_state == expected_state
   end
