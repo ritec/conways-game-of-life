@@ -41,16 +41,16 @@ describe Game do
 
   describe 'spawn_cells' do
     it 'should spawn correct amount of live cells in world' do
-      expect(@game.cells.select{|c| c.alive? }.count).to eq(3)
+      expect(Cell.instances.select{|c| c.alive? }.count).to eq(3)
     end
 
     it 'should spawn correct amount of cells in world' do
-      expect(@game.cells.count).to eq(25)
+      expect(Cell.instances.count).to eq(25)
     end
   end
 
   describe "get_cells_alive" do
-    it 'should find correct live neighbors count of corner cell', focus: true do
+    it 'should find correct live neighbors count of corner cell' do
       live_cells = @game.get_cells_alive
       expect(live_cells.count).to eq(3)
     end
@@ -66,14 +66,14 @@ describe Game do
   describe "rule_parser" do
     it 'should correctly find cells affected by rules to toggle' do
       cells_to_toggle = @game.rule_parser
-      cell_affected = @game.cells.select{|c| c.x == 2 && c.y == 1}.first
+      cell_affected = Cell.instances.select{|c| c.x == 2 && c.y == 1}.first
       expect(cells_to_toggle).to include(cell_affected)
     end
   end
 
   describe "tick!" do
     it 'should correctly change the state of an affected cell' do
-      cell_affected = @game.cells.select{|c| c.x == 2 && c.y == 1}.first
+      cell_affected = Cell.instances.select{|c| c.x == 2 && c.y == 1}.first
       expect(cell_affected.state).to eq(1)
       @game.tick!
       expect(cell_affected.state).to eq(0)
@@ -81,7 +81,7 @@ describe Game do
   end
 
   describe "check_state" do
-    it 'should correctly check truthy state of games' do
+    it 'should correctly check truthy state of games', focus: true do
       @game2 = Game.new(world: @blinker)
       result = @game2.test_game(@blinker, 6, @blinker)
       expect(result).to eq(true)
