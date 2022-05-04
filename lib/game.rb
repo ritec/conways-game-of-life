@@ -38,7 +38,7 @@ class Game
 
   def get_all_candidate_cells
     candidate_cells = get_cells_alive.map{ |cell| cell.neighbors(cell.x, cell.y)}
-    candidate_cells.flatten!.uniq!
+    candidate_cells.flatten.uniq
   end
 
   def rule_parser

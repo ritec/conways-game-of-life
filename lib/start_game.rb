@@ -1,6 +1,6 @@
 require_relative 'game.rb'
 
-#Starts randomly generated Game of Life
+# Starts randomly generated Game of Life
 # game = Game.new
 # game.start
 
@@ -21,5 +21,5 @@ require_relative 'game.rb'
 # Starts Randomly generated Game of Life
 # with arbitrary width and lengths
 #
-game = Game.new(width: 2, height: 3)
+game = Game.new(width: 22, height: 22)
 game.start
