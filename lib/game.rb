@@ -35,11 +35,13 @@ class Game
   end
 
   def get_cells_alive
-    Cell.instances.select{|cell| cell.alive? }
+    Cell.instances.select{ |cell| cell.alive? }
   end
 
   def get_all_candidate_cells
-    candidate_cells = get_cells_alive.map{ |cell| cell.neighbors(cell.x, cell.y) }
+    live_cells = get_cells_alive
+    candidate_cells = live_cells.map{ |cell| cell.neighbors(cell.x, cell.y) }
+    candidate_cells << live_cells
     candidate_cells.flatten.uniq
   end
 
