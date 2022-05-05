@@ -11,9 +11,11 @@ class Game
   end
 
   def display_world
-    @world = Cell.instances.each_slice(@width).to_a
+    sliced_world = Cell.instances.each_slice(width).to_a
     print "\n"
-    @world.each{|row| print row.map(&:state).to_s + "\n"}
+    sliced_world.each{|row|
+      print row.map(&:emojifi_state).join('') + "\n"
+    }
     print "Iteration: #{@@iteration_count} \n"
   end
 
@@ -21,8 +23,8 @@ class Game
     reset_game
     world.each_with_index do |row, row_index|
       row.each_with_index do |column, column_index|
-          state = (column == 1) ? 1 : 0
-          Cell.new(column_index, row_index, state)
+        state = (column == 1) ? 1 : 0
+        Cell.new(column_index, row_index, state)
       end
     end
     Cell.instances
@@ -37,14 +39,14 @@ class Game
   end
 
   def get_all_candidate_cells
-    candidate_cells = get_cells_alive.map{ |cell| cell.neighbors(cell.x, cell.y)}
-    candidate_cells.flatten!.uniq!
+    candidate_cells = get_cells_alive.map{ |cell| cell.neighbors(cell.x, cell.y) }
+    candidate_cells.flatten.uniq
   end
 
   def rule_parser
     candidates = []
     get_all_candidate_cells.each do |cell|
-      candidates << cell if cell.alive? && (cell.live_neighbors_count < 2) || (cell.live_neighbors_count > 3)
+      candidates << cell if cell.alive? && ((cell.live_neighbors_count < 2) || (cell.live_neighbors_count > 3))
       candidates << cell if cell.dead? && cell.live_neighbors_count == 3
     end
     candidates
@@ -70,9 +72,7 @@ class Game
     while true
       display_world
       tick!
-      display_world
       sleep 0.5
     end
   end
-
 end
