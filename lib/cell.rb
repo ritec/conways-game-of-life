@@ -29,6 +29,10 @@ class Cell
     @state = alive? ? 0 : 1
   end
 
+  def emojifi_state
+    alive? ? '⚫️' : '⚪️'
+  end
+
   def neighbors(x, y)
     north      = self.class.instances.select{|c| (x == c.x  ) && (y == c.y-1) }
     north_east = self.class.instances.select{|c| (x == c.x+1) && (y == c.y-1) }
@@ -46,5 +50,4 @@ class Cell
   def live_neighbors_count
     neighbors(x,y).flatten!.map(&:state).count(1)
   end
-
 end
