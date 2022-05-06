@@ -1,6 +1,6 @@
 require_relative '../lib/game.rb'
 
-describe Cell do
+RSpec.describe Cell do
 
   before(:all) do
     @live_cell_one = Cell.new(1,0,1)
@@ -40,14 +40,12 @@ describe Cell do
   describe 'neighbors' do
     it 'should find all neighbors of a cell' do
       neighbors = @live_corner_cell.neighbors(@live_corner_cell.x, @live_corner_cell.y)
-      expect(neighbors.size).to eq(8)
-      expect(neighbors.flatten!).to include(@live_cell_one)
+      expect(neighbors).to include(@live_cell_one)
     end
 
     it 'should find no neighbor cells if cell is lonely' do
       neighbors = @dead_lonely_cell.neighbors(@dead_lonely_cell.x, @dead_lonely_cell.y)
-      expect(neighbors.size).to eq(8)
-      expect(neighbors.flatten!.size).to eq(0)
+      expect(neighbors.size).to eq(0)
     end
   end
 

@@ -1,6 +1,6 @@
 require_relative '../lib/game.rb'
 
-describe Game do
+RSpec.describe Game do
 
   before(:all) do
     @blinker = [
@@ -28,11 +28,32 @@ describe Game do
       [0, 0, 0, 0, 0, 0]
     ]
 
+    @single_glider = [
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,1,1,1,1,1,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0]
+    ]
+
+    @single_glider_mutated = [
+      [0,0,0,0,0,1,0,0,0,0,0],
+      [0,0,0,0,0,1,0,0,0,0,0],
+      [0,0,0,0,0,1,0,0,0,0,0],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,1,1,1,0,0,0,1,1,1,0],
+      [0,0,0,0,0,0,0,0,0,0,0],
+      [0,0,0,0,0,1,0,0,0,0,0],
+      [0,0,0,0,0,1,0,0,0,0,0],
+      [0,0,0,0,0,1,0,0,0,0,0]
+    ]
+
     @game = Game.new(world: @blinker)
     @game.spawn_cells
-  end
-
-  after(:each) do
   end
 
   it 'should test initialization with world' do
@@ -81,27 +102,33 @@ describe Game do
   end
 
   describe "check_state" do
-    it 'should correctly check truthy state of games', focus: true do
-      @game2 = Game.new(world: @blinker)
-      result = @game2.test_game(@blinker, 6, @blinker)
+    it 'should correctly check truthy state of games' do
+      game2 = Game.new(world: @blinker)
+      result = game2.test_game(@blinker, 6, @blinker)
       expect(result).to eq(true)
     end
 
     it 'should correctly check falsey state of games' do
-      @game3 = Game.new(world: @blinker)
-      result = @game3.test_game(@blinker, 5, @blinker)
+      game3 = Game.new(world: @blinker)
+      result = game3.test_game(@blinker, 5, @blinker)
       expect(result).to eq(false)
     end
 
     it 'should correctly check falsey state of games' do
-      @game4 = Game.new(world: @blinker)
-      result = @game4.test_game(@blinker, 2, @still_life)
+      game4 = Game.new(world: @blinker)
+      result = game4.test_game(@blinker, 2, @still_life)
       expect(result).to eq(false)
     end
 
     it 'should correctly alternate beacon' do
-      @game5 = Game.new(world: @beacon)
-      result = @game5.test_game(@beacon, 10, @beacon)
+      game5 = Game.new(world: @beacon)
+      result = game5.test_game(@beacon, 10, @beacon)
+      expect(result).to eq(true)
+    end
+
+    it 'should show correct postions for glider after 7 iterations' do
+      game6 = Game.new(world: @single_glider)
+      result = game6.test_game(@single_glider, 7, @single_glider_mutated)
       expect(result).to eq(true)
     end
   end
