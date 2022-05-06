@@ -44,10 +44,10 @@ class Cell
     south_east = self.class.instances.select{|c| (x == c.x+1) && (y == c.y+1) }
     south      = self.class.instances.select{|c| (x == c.x  ) && (y == c.y+1) }
     south_west = self.class.instances.select{|c| (x == c.x-1) && (y == c.y+1) }
-    [north, north_east, east, south_east, south, south_west, west, north_west]
+    [north, north_east, east, south_east, south, south_west, west, north_west].flatten!
   end
 
   def live_neighbors_count
-    neighbors(x,y).flatten!.map(&:state).count(1)
+    neighbors(x,y).map(&:state).count(1)
   end
 end

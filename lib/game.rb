@@ -1,29 +1,28 @@
 require_relative 'cell.rb'
 
 class Game
-  attr_accessor :world, :width, :height, :cells
-  @@iteration_count = 0
+  attr_accessor :world, :width, :height
 
   def initialize(world: nil,width: 10,height: 10)
     @world = world || Array.new(width){ Array.new(height){rand(0..1)} }
     @width = @world.first.size
     @height = @world.size
+    @iteration_count = 0
   end
 
   def display_world
     sliced_world = Cell.instances.each_slice(width).to_a
-    print "\n"
+    puts
     sliced_world.each{|row|
-      print row.map(&:emojifi_state).join('') + "\n"
+      puts row.map(&:emojifi_state).join('')
     }
-    print "Iteration: #{@@iteration_count} \n"
+    puts "Iteration: #{@iteration_count}"
   end
 
   def spawn_cells
     reset_game
     world.each_with_index do |row, row_index|
-      row.each_with_index do |column, column_index|
-        state = (column == 1) ? 1 : 0
+      row.each_with_index do |state, column_index|
         Cell.new(column_index, row_index, state)
       end
     end
@@ -57,15 +56,14 @@ class Game
   def tick!
     cells_to_mutate = rule_parser
     cells_to_mutate.each{ |cell| cell.toggle! }
-    @@iteration_count += 1
+    @iteration_count += 1
   end
 
   def test_game(seed, num_of_iterations, expected_state)
-    @world = seed
     spawn_cells
     (1..num_of_iterations).each{|i| tick! }
-    @world = Cell.instances.each_slice(@width).to_a
-    world_state = @world.map{|row| row.map(&:state) }
+    world = Cell.instances.each_slice(@width).to_a
+    world_state = world.map{|row| row.map(&:state) }
     world_state == expected_state
   end
 
