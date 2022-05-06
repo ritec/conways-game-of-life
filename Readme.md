@@ -1,6 +1,7 @@
 ## My interpretation of Conway's Game of Life written in Ruby.
 
 ### Here are the Game's Rules:
+Read all about it [here](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life "here")
 
 1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.
 2. Any live cell with two or three live neighbours lives on to the next generation.
